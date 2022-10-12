@@ -30,7 +30,7 @@ class EnumIntegerElement(EnumElement):
 
     def get_typescript(self) -> str:
         """Return the element in typescript syntax (including indentation)."""
-        return "    {0} = \{1}\,".format(self.name, self.value)
+        return "    {0} = {1},".format(self.name, self.value)
 
 
 
