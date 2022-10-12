@@ -3,6 +3,7 @@ import sys
 from typing import Union
 import argparse
 
+from py_to_ts_interfaces.constants import ENUM_KIND_INT, ENUM_KIND_STR, ENUM_KIND_DEFAULT
 from py_to_ts_interfaces.enums import EnumDefinition
 from py_to_ts_interfaces.file_io import write_file, read_file
 from py_to_ts_interfaces.interfaces import InterfaceDefinition
@@ -31,7 +32,11 @@ def python_to_typescript_file(python_code: str) -> str:
     # convert each group into either an EnumDefinition or InterfaceDefinition object
     processed_definitions: list[Union[EnumDefinition, InterfaceDefinition, StringDefinition]] = []
     for definition in definition_groups:
-        if definition[0].endswith("(Enum):"):
+        if definition[0].endswith(ENUM_KIND_STR):
+            processed_definitions.append(EnumDefinition(definition, ENUM_KIND_STR))
+        elif definition[0].endswith(ENUM_KIND_INT):
+            processed_definitions.append(EnumDefinition(definition, ENUM_KIND_INT))
+        elif definition[0].endswith(ENUM_KIND_DEFAULT):
             processed_definitions.append(EnumDefinition(definition))
         elif definition[0].endswith("\""):
             processed_definitions.append(StringDefinition(definition))
